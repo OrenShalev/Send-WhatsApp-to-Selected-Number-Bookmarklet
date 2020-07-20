@@ -1,19 +1,66 @@
 <html>
-<head></head>
-<body>
-<h1>Hello</h1>
-<a href="https://www.google.com">Link 1</a>
-<a href="javascript:(function sendToSelectedNumber() {
+  <head>
+    <title>
+      Bookmarklet for sending a WhatsApp message to a selected number
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>Bookmarklet for sending a WhatsApp message to a selected number</h1>
+    <a
+      href="javascript:(function sendToSelectedNumber() {
   /* Get the text the user selected. */
   const selectedText = document.getSelection().toString();
   /* Remove whitespace around selection, characters which aren't digits or '+', and leadding zero. */
-  const parsedText = selectedText.trim().replace(/[^0-9+]/g, '').replace(/^0/,'');
+  const parsedText = selectedText.trim().replace(/[^0-9+]/g, '').replace(/^0/, '');
   /* If starts with '+' remove it, otherwise prepend '972'. */
   const finalNumber = parsedText.startsWith('+') ? parsedText.substring(1) : `972${parsedText}`;
   
   const url =`https://wa.me/${finalNumber}`;
-  console.log(url);
-  /*   window.open(url, '_blank'); */
-})();">Link 1</a>
-</body>
+  window.open(url, '_blank');
+})();"
+    >
+      Drag this to your bookmarks bar
+    </a>
+
+    <h2>Instructions</h2>
+    <ol>
+      <li>Drag the link above to your bookmarks bar.</li>
+      <li>
+        When you see a phone number on a web page and want to send a WhatsApp
+        message to it, select it.
+      </li>
+      <li>
+        Click the Bookmarklet. You'll be taken to WhatsApp's site and from there
+        to the app.
+      </li>
+    </ol>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Not bullet-proof. Far from it, actually.</li>
+      <li>
+        If not a full international phone number (starting with `+`), assumes
+        it's Israeli and prepends `972`.
+      </li>
+    </ul>
+
+    <h2>How it works</h2>
+    <p>Here's the full code, with comments:</p>
+    <!--
+    <pre><code>
+      javascript:(function sendToSelectedNumber() {
+        /* Get the text the user selected. */
+        const selectedText = document.getSelection().toString();
+        /* Remove whitespace around selection, characters which aren't digits or '+', and leadding zero. */
+        const parsedText = selectedText.trim().replace(/[^0-9+]/g, '').replace(/^0/, '');
+        /* If starts with '+' remove it, otherwise prepend '972'. */
+        const finalNumber = parsedText.startsWith('+') ? parsedText.substring(1) : `972${parsedText}`;
+        
+        const url =`https://wa.me/${finalNumber}`;
+        window.open(url, '_blank');
+      })();
+    </code></pre>
+    -->
+  </body>
 </html>
