@@ -4,11 +4,33 @@
       Bookmarklet for sending a WhatsApp message to a selected number
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font: 100%/1.5 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans,
+          Ubuntu, Cantarell, Helvetica Neue;
+        color: hsl(0, 0%, 25%);
+      }
+      #bookmarklet {
+        color: white;
+        background-color: hsl(115, 44%, 58%);
+        padding: 0.2em;
+        border-radius: 0.2em;
+      }
+      code {
+        font-family: Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
+          'Lucida Sans Typewriter', 'DejaVu Sans Mono',
+          'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco,
+          'Courier New', Courier, monospace;
+      }
+    </style>
   </head>
   <body>
     <h1>Bookmarklet for sending a WhatsApp message to a selected number</h1>
-    <a
-      href="javascript:(function sendToSelectedNumber() {
+    <p>
+      Drag this to your bookmarks bar:
+      <a
+        id="bookmarklet"
+        href="javascript:(function sendToSelectedNumber() {
   /* Get the text the user selected. */
   const selectedText = document.getSelection().toString();
   /* Remove whitespace around selection, characters which aren't digits or '+', and leadding zero. */
@@ -16,12 +38,14 @@
   /* If starts with '+' remove it, otherwise prepend '972'. */
   const finalNumber = parsedText.startsWith('+') ? parsedText.substring(1) : `972${parsedText}`;
   
+  console.info(`Trying to send a WA message to number: ${finalNumber}`);
   const url =`https://wa.me/${finalNumber}`;
   window.open(url, '_blank');
 })();"
-    >
-      Drag this to your bookmarks bar
-    </a>
+      >
+        Send WhatsApp
+      </a>
+    </p>
 
     <h2>Instructions</h2>
     <ol>
@@ -47,7 +71,6 @@
 
     <h2>How it works</h2>
     <p>Here's the full code, with comments:</p>
-    <!--
     <pre><code>
       javascript:(function sendToSelectedNumber() {
         /* Get the text the user selected. */
@@ -57,10 +80,10 @@
         /* If starts with '+' remove it, otherwise prepend '972'. */
         const finalNumber = parsedText.startsWith('+') ? parsedText.substring(1) : `972${parsedText}`;
         
+        console.info(`Trying to send a WA message to number: ${finalNumber}`);
         const url =`https://wa.me/${finalNumber}`;
         window.open(url, '_blank');
       })();
     </code></pre>
-    -->
   </body>
 </html>
