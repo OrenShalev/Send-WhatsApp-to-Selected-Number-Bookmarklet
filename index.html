@@ -6,15 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body {
-        font: 100%/1.5 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans,
-          Ubuntu, Cantarell, Helvetica Neue;
         color: hsl(0, 0%, 25%);
       }
-      #bookmarklet {
+      body,
+      #number-field,
+      #send-wa {
+        font: 100%/1.5 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans,
+          Ubuntu, Cantarell, Helvetica Neue;
+      }
+      #bookmarklet,
+      #send-wa {
+        display: inline-block;
+        margin: 0.5em 0;
         color: white;
         background-color: hsl(115, 44%, 58%);
-        padding: 0.2em;
-        border-radius: 0.2em;
+        padding: 0.5em;
+        border-radius: 0.5em;
+        white-space: nowrap;
+      }
+      #number-field {
+        line-height: 2;
+        width: 24ch;
+      }
+      #send-wa {
+        border: none;
+        cursor: pointer;
+      }
+      pre {
+        overflow: auto;
       }
       code {
         font-family: Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
@@ -60,6 +79,19 @@
       </li>
     </ol>
 
+    <h2>Longer way, works on mobile too:</h2>
+    <ol>
+      <li>Bookmark this page.</li>
+      <li>On another page (or app), copy the phone number.</li>
+      <li>Paste below and click "Send WhatsApp".</li>
+    </ol>
+
+    <input id="number-field" type="tel" onclick="sendWA" />
+    &nbsp;
+    <button id="send-wa" onclick="sendWA()">
+      Send WhatsApp
+    </button>
+
     <h2>Notes</h2>
     <ul>
       <li>Not bullet-proof. Far from it, actually.</li>
@@ -70,20 +102,44 @@
     </ul>
 
     <h2>How it works</h2>
-    <p>Here's the full code, with comments:</p>
+    <p>
+      Get the number in the right format and plug that into the URL of
+      WhatsApp's API page, <code>https://wa.me/&lt;number&gt;</code>. Here's the
+      full code with comments:
+    </p>
     <pre><code>
-      javascript:(function sendToSelectedNumber() {
-        /* Get the text the user selected. */
-        const selectedText = document.getSelection().toString();
-        /* Remove whitespace around selection, characters which aren't digits or '+', and leadding zero. */
-        const parsedText = selectedText.trim().replace(/[^0-9+]/g, '').replace(/^0/, '');
-        /* If starts with '+' remove it, otherwise prepend '972'. */
-        const finalNumber = parsedText.startsWith('+') ? parsedText.substring(1) : `972${parsedText}`;
-        
-        console.info(`Trying to send a WA message to number: ${finalNumber}`);
-        const url =`https://wa.me/${finalNumber}`;
-        window.open(url, '_blank');
-      })();
+javascript:(function sendToSelectedNumber() {
+  /* Get the text the user selected. */
+  const selectedText = document.getSelection().toString();
+  /* Remove whitespace around selection, characters which aren't digits or '+', and leadding zero. */
+  const parsedText = selectedText.trim().replace(/[^0-9+]/g, '').replace(/^0/, '');
+  /* If starts with '+' remove it, otherwise prepend '972'. */
+  const finalNumber = parsedText.startsWith('+') ? parsedText.substring(1) : `972${parsedText}`;
+  
+  console.info(`Trying to send a WA message to number: ${finalNumber}`);
+  const url =`https://wa.me/${finalNumber}`;
+  window.open(url, '_blank');
+})();
     </code></pre>
+
+    <script language="javascript">
+      function sendWA() {
+        const value = document.getElementById('number-field').value;
+        // Same code as above
+        /* Remove whitespace around selection, characters which aren't digits or '+', and leadding zero. */
+        const parsedText = value
+          .trim()
+          .replace(/[^0-9+]/g, '')
+          .replace(/^0/, '');
+        /* If starts with '+' remove it, otherwise prepend '972'. */
+        const finalNumber = parsedText.startsWith('+')
+          ? parsedText.substring(1)
+          : `972${parsedText}`;
+
+        console.info(`Trying to send a WA message to number: ${finalNumber}`);
+        const url = `https://wa.me/${finalNumber}`;
+        window.open(url, '_blank');
+      }
+    </script>
   </body>
 </html>
